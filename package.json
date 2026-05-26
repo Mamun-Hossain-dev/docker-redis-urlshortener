@@ -1,0 +1,14 @@
+{
+  "name": "url-shortener",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "ejs": "^6.0.1",
+    "express": "^4.18.2",
+    "nanoid": "^3.3.6",
+    "pg": "^8.11.0",
+    "redis": "^4.6.7"
+  }
+}

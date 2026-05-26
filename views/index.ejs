@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URL Shortener</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="card hero">
+      <p class="eyebrow">Fast. Simple. Reliable.</p>
+      <h1>URL Shortener Service</h1>
+      <p class="subtitle">Convert long links into neat, shareable short URLs in one click.</p>
+
+      <form action="/shorten" method="post" class="shorten-form">
+        <label for="url">Paste your long URL</label>
+        <input
+          id="url"
+          name="url"
+          type="url"
+          placeholder="https://example.com/very/long/link"
+          value="<%= urlInput %>"
+          required
+        />
+
+        <label for="alias">Custom alias (optional)</label>
+        <div class="input-row">
+          <input
+            id="alias"
+            name="alias"
+            type="text"
+            placeholder="my-link-2026"
+            value="<%= aliasInput %>"
+            pattern="[a-zA-Z0-9_-]{4,32}"
+            minlength="4"
+            maxlength="32"
+          />
+          <button type="submit">Shorten</button>
+        </div>
+      </form>
+
+      <% if (error) { %>
+        <p class="message error"><%= error %></p>
+      <% } %>
+
+      <% if (shortUrl) { %>
+        <div class="result">
+          <span>Your short link is ready:</span>
+          <a id="latestLink" href="<%= shortUrl %>" target="_blank" rel="noreferrer"><%= shortUrl %></a>
+          <button type="button" class="copy-btn" data-copy="<%= shortUrl %>">Copy Link</button>
+        </div>
+      <% } %>
+    </section>
+
+    <section class="card list-card">
+      <h2>Recent Links</h2>
+      <% if (!recentLinks.length) { %>
+        <p class="empty">No links yet. Create your first short URL above.</p>
+      <% } else { %>
+        <ul class="link-list">
+          <% recentLinks.forEach((item) => { %>
+            <li>
+              <div class="link-head">
+                <a href="/<%= item.short_code %>" target="_blank" rel="noreferrer"><%= item.short_code %></a>
+                <button type="button" class="copy-btn slim" data-copy="<%= `${baseUrl}/${item.short_code}` %>">Copy</button>
+              </div>
+              <p title="<%= item.original_url %>"><%= item.original_url %></p>
+              <div class="meta">
+                <span><%= item.click_count %> clicks</span>
+                <span><%= new Date(item.created_at).toLocaleString('en-US') %></span>
+              </div>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
