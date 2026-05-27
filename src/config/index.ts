@@ -1,5 +1,26 @@
-function getConfig() {
-  const port = process.env.PORT || 3000
+export interface DbConfig {
+  host?: string
+  port?: string
+  database?: string
+  user?: string
+  password?: string
+}
+
+export interface RedisConfig {
+  host?: string
+  port?: string
+  password?: string
+}
+
+export interface AppConfig {
+  port: number
+  baseUrl: string
+  db: DbConfig
+  redis: RedisConfig
+}
+
+export function getConfig(): AppConfig {
+  const port = Number(process.env.PORT || 3000)
   const baseUrl = process.env.BASE_URL || `http://localhost:${port}`
 
   return {
@@ -19,5 +40,3 @@ function getConfig() {
     },
   }
 }
-
-module.exports = { getConfig }

@@ -1,19 +1,19 @@
-const { getConfig } = require('./config')
-const { createDbPool, ensureSchema } = require('./db/postgres')
-const { createRedisClient } = require('./db/redis')
-const { createUrlService } = require('./services/urlService')
-const { createUrlController } = require('./controllers/urlController')
-const { createUrlRouter } = require('./routes/urlRoutes')
-const { createApp } = require('./app')
+import { createApp } from './app'
+import { getConfig } from './config'
+import { createUrlController } from './controllers/urlController'
+import { createDbPool, ensureSchema } from './db/postgres'
+import { createRedisClient } from './db/redis'
+import { createUrlRouter } from './routes/urlRoutes'
+import { createUrlService } from './services/urlService'
 
-async function startServer() {
+async function startServer(): Promise<void> {
   const config = getConfig()
   const pool = createDbPool(config.db)
   const redis = createRedisClient(config.redis)
 
   await ensureSchema(pool)
 
-  redis.connect().catch((error) => {
+  redis.connect().catch((error: Error) => {
     console.error('Redis connection failed:', error.message)
   })
 

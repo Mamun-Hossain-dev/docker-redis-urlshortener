@@ -1,7 +1,7 @@
-const express = require('express')
-const path = require('path')
+import express, { type Router } from 'express'
+import path from 'path'
 
-function createApp(urlRouter) {
+export function createApp(urlRouter: Router) {
   const app = express()
 
   app.use(express.json())
@@ -15,5 +15,3 @@ function createApp(urlRouter) {
 
   return app
 }
-
-module.exports = { createApp }

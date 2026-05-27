@@ -1,6 +1,7 @@
-const express = require('express')
+import express, { type Router } from 'express'
+import type { UrlController } from '../controllers/urlController'
 
-function createUrlRouter(urlController) {
+export function createUrlRouter(urlController: UrlController): Router {
   const router = express.Router()
 
   router.get('/', urlController.renderHome)
@@ -9,5 +10,3 @@ function createUrlRouter(urlController) {
 
   return router
 }
-
-module.exports = { createUrlRouter }

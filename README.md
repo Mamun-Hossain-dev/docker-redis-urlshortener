@@ -1,6 +1,6 @@
 ﻿# Docker URL Shortener
 
-A full-stack URL shortener built with **Node.js (Express)**, **PostgreSQL**, and **Redis**, fully containerized with **Docker Compose**.
+A full-stack URL shortener built with **Node.js + TypeScript (Express)**, **PostgreSQL**, and **Redis**, fully containerized with **Docker Compose**.
 
 ## Features
 
@@ -15,7 +15,7 @@ A full-stack URL shortener built with **Node.js (Express)**, **PostgreSQL**, and
 
 ## Tech Stack
 
-- Backend: Express.js
+- Backend: Express.js + TypeScript
 - View Engine: EJS
 - Database: PostgreSQL 16
 - Cache: Redis 7
@@ -31,21 +31,21 @@ A full-stack URL shortener built with **Node.js (Express)**, **PostgreSQL**, and
 ├─ init.sql
 ├─ package.json
 ├─ src/
-│  ├─ index.js
-│  ├─ app.js
+│  ├─ index.ts
+│  ├─ app.ts
 │  ├─ config/
-│  │  └─ index.js
+│  │  └─ index.ts
 │  ├─ controllers/
-│  │  └─ urlController.js
+│  │  └─ urlController.ts
 │  ├─ db/
-│  │  ├─ postgres.js
-│  │  └─ redis.js
+│  │  ├─ postgres.ts
+│  │  └─ redis.ts
 │  ├─ routes/
-│  │  └─ urlRoutes.js
+│  │  └─ urlRoutes.ts
 │  ├─ services/
-│  │  └─ urlService.js
+│  │  └─ urlService.ts
 │  └─ utils/
-│     └─ validators.js
+│     └─ validators.ts
 ├─ views/
 │  └─ index.ejs
 └─ public/
