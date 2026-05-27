@@ -1,5 +1,5 @@
 const { getConfig } = require('./config')
-const { createDbPool } = require('./db/postgres')
+const { createDbPool, ensureSchema } = require('./db/postgres')
 const { createRedisClient } = require('./db/redis')
 const { createUrlService } = require('./services/urlService')
 const { createUrlController } = require('./controllers/urlController')
@@ -10,6 +10,8 @@ async function startServer() {
   const config = getConfig()
   const pool = createDbPool(config.db)
   const redis = createRedisClient(config.redis)
+
+  await ensureSchema(pool)
 
   redis.connect().catch((error) => {
     console.error('Redis connection failed:', error.message)

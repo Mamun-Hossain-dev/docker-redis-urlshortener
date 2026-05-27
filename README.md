@@ -115,7 +115,9 @@ docker compose down -v
 
 - Redis is used as a read cache for short code lookups.
 - PostgreSQL stores permanent URL mappings and click counts.
-- `init.sql` initializes the table and ensures `click_count` column exists.
+- `init.sql` runs on first PostgreSQL volume initialization.
+- App startup also runs a safe schema check (`CREATE TABLE IF NOT EXISTS` + `ADD COLUMN IF NOT EXISTS`) so small schema drifts are auto-healed.
+- If you change `init.sql`, run `docker compose down -v` once to reinitialize Postgres from scratch.
 
 ## Future Improvements
 
