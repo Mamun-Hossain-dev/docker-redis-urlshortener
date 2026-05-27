@@ -10,4 +10,4 @@ function createUrlRouter(urlController) {
   return router
 }
 
-module.exports = { createUrlRouter }
+module.exports = { createUrlRouter };

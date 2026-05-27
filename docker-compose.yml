@@ -42,7 +42,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: docker-url-shortener:local
+    image: mamunhossain1281/docker-url-shortener:v1.1
     container_name: myapp_node
     restart: unless-stopped
     env_file:
