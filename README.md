@@ -83,6 +83,13 @@ Open:
 
 - App UI: `http://localhost:3000`
 
+## Docker Build Strategy
+
+- This project uses a **multi-stage Docker build** in `Dockerfile`.
+- Stage 1 (`builder`) installs dependencies and compiles TypeScript.
+- Stage 2 (`runtime`) copies only the production artifacts (`dist`, `views`, `public`) and production dependencies.
+- Result: smaller, cleaner, and more secure final image.
+
 ## Useful Commands
 
 ```bash
