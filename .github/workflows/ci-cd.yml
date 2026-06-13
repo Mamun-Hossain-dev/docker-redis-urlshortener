@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 env:
-  DOCKER_IMAGE: mamunhossain1281/docker-url-shortener:latest
+  DOCKER_IMAGE: mamunhossain1281/docker-url-shortener
 
 jobs:
   build:
