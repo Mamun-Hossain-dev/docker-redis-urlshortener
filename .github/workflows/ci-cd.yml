@@ -105,15 +105,15 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           port: 22
           script: |
-            # Go to project directory (create if first time)
-            cd /root/app || (mkdir -p /root/app && cd /root/app)
+            # Create project directory
+            mkdir -p /root/app && cd /root/app
 
-            # Copy docker-compose.yml from repo (if not exists)
-            if [ ! -f docker-compose.yml ]; then
-              apt-get install -y curl > /dev/null 2>&1
-              curl -O https://raw.githubusercontent.com/Mamun-Hossain-dev/docker-redis-urlshortener/main/docker-compose.yml
-              curl -O https://raw.githubusercontent.com/Mamun-Hossain-dev/docker-redis-urlshortener/main/.env.example
-            fi
+            # Always download latest docker-compose.yml from GitHub
+            apt-get install -y curl > /dev/null 2>&1
+            curl -O https://raw.githubusercontent.com/Mamun-Hossain-dev/docker-redis-urlshortener/main/docker-compose.yml
+
+            # Copy .env file (already created at /root/.env)
+            cp /root/.env .env
 
             # Pull latest images
             docker compose pull
