@@ -45,7 +45,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
@@ -115,11 +115,11 @@ jobs:
             # Copy .env file (already created at /root/.env)
             cp /root/.env .env
 
-            # Pull latest images
-            docker compose pull
+            # Pull latest images (always check for new)
+            docker compose pull --ignore-pull-failures
 
-            # Restart all services with latest image
-            docker compose up -d
+            # Restart all services with latest image (always pull + force recreate)
+            docker compose up -d --pull always --force-recreate
 
             # Remove old dangling images
             docker image prune -f
