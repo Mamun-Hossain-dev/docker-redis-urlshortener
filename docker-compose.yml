@@ -38,7 +38,7 @@ services:
 
   # app service
   app:
-    image: mamunhossain1281/docker-url-shortener:v1.1
+    image: mamunhossain1281/docker-url-shortener:latest
     container_name: myapp_node
     restart: unless-stopped
     env_file:
