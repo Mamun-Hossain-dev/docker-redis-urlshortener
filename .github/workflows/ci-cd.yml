@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 env:
-  DOCKER_IMAGE: mamunhossain1281/docker-url-shortener
+  DOCKER_IMAGE: mamunhossain1281/docker-url-shortener:latest
 
 jobs:
   build:
@@ -115,11 +115,11 @@ jobs:
             # Copy .env file (already created at /root/.env)
             cp /root/.env .env
 
-            # Pull latest images (always check for new)
-            docker compose pull --ignore-pull-failures
+            # Stop all running services
+            docker compose down || true
 
-            # Restart all services with latest image (always pull + force recreate)
-            docker compose up -d --pull always --force-recreate
+            # Start all services fresh (always pull latest image)
+            docker compose up -d --pull always
 
             # Remove old dangling images
             docker image prune -f
