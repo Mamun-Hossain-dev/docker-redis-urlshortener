@@ -45,7 +45,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -105,20 +105,21 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           port: 22
           script: |
-            # Pull the latest Docker image
-            docker pull ${{ env.DOCKER_IMAGE }}:latest
+            # Go to project directory (create if first time)
+            cd /root/app || (mkdir -p /root/app && cd /root/app)
 
-            # Stop and remove old container (if exists)
-            docker stop urlshortener_app || true
-            docker rm urlshortener_app || true
+            # Copy docker-compose.yml from repo (if not exists)
+            if [ ! -f docker-compose.yml ]; then
+              apt-get install -y curl > /dev/null 2>&1
+              curl -O https://raw.githubusercontent.com/Mamun-Hossain-dev/docker-redis-urlshortener/main/docker-compose.yml
+              curl -O https://raw.githubusercontent.com/Mamun-Hossain-dev/docker-redis-urlshortener/main/.env.example
+            fi
+
+            # Pull latest images
+            docker compose pull
+
+            # Restart all services with latest image
+            docker compose up -d
 
             # Remove old dangling images
             docker image prune -f
-
-            # Run new container
-            docker run -d \
-              --name urlshortener_app \
-              --restart unless-stopped \
-              -p 3000:3000 \
-              --env-file /root/.env \
-              ${{ env.DOCKER_IMAGE }}:latest
