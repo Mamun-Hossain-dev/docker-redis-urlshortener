@@ -108,13 +108,28 @@ jobs:
             # Create project directory
             mkdir -p /root/app && cd /root/app
 
-            # Always download latest docker-compose.yml from GitHub
+            # Always download latest files from GitHub
             apt-get install -y curl > /dev/null 2>&1
             curl -O https://raw.githubusercontent.com/Mamun-Hossain-dev/docker-redis-urlshortener/main/docker-compose.yml
+            curl -O https://raw.githubusercontent.com/Mamun-Hossain-dev/docker-redis-urlshortener/main/init.sql
 
-            # Copy .env file (already created at /root/.env)
-            cp /root/.env .env
-
+            # Create .env file from GitHub Secrets
+            cat > .env << 'ENVEOF'
+            NODE_ENV=production
+            PORT=3000
+            BASE_URL=https://mamunhossaindev.me
+            
+            DB_HOST=postgres
+            DB_PORT=${{ secrets.DB_PORT }}
+            DB_NAME=${{ secrets.DB_NAME }}
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            
+            REDIS_HOST=redis
+            REDIS_PORT=${{ secrets.REDIS_PORT }}
+            REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+            ENVEOF
+            
             # Stop all running services
             docker compose down || true
 
