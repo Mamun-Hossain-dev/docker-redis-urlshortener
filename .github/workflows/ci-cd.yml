@@ -105,36 +105,37 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           port: 22
           script: |
-            # Create project directory
-            mkdir -p /root/app && cd /root/app
+            # ── 1. Ensure project directory at /var/www ──────────────────
+            sudo mkdir -p /var/www && sudo chown -R "$USER":"$USER" /var/www
+            cd /var/www
 
-            # Always download latest files from GitHub
-            apt-get install -y curl > /dev/null 2>&1
-            curl -O https://raw.githubusercontent.com/Mamun-Hossain-dev/docker-redis-urlshortener/main/docker-compose.yml
+            # ── 2. Download latest docker-compose.prod.yml & init.sql ────
+            curl -O https://raw.githubusercontent.com/Mamun-Hossain-dev/docker-redis-urlshortener/main/docker-compose.prod.yml
             curl -O https://raw.githubusercontent.com/Mamun-Hossain-dev/docker-redis-urlshortener/main/init.sql
 
-            # Create .env file from GitHub Secrets
+            # ── 3. Create / update .env from GitHub Secrets ──────────────
             cat > .env << 'ENVEOF'
             NODE_ENV=production
             PORT=3000
             BASE_URL=https://mamunhossaindev.me
-            
+
             DB_HOST=postgres
             DB_PORT=${{ secrets.DB_PORT }}
             DB_NAME=${{ secrets.DB_NAME }}
             DB_USER=${{ secrets.DB_USER }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            
+
             REDIS_HOST=redis
             REDIS_PORT=${{ secrets.REDIS_PORT }}
             REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
             ENVEOF
-            
-            # Stop all running services
-            docker compose down || true
 
-            # Start all services fresh (always pull latest image)
-            docker compose up -d --pull always
+            # ── 4. Pull latest images & restart everything ───────────────
+            docker compose -f /var/www/docker-compose.prod.yml down || true
+            docker compose -f /var/www/docker-compose.prod.yml up -d --pull always
 
-            # Remove old dangling images
+            # ── 5. Cleanup unused images ─────────────────────────────────
             docker image prune -f
+
+            # ── 6. Show running containers (deploy status) ───────────────
+            docker ps
